@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#ff00ff"/>
+  <title>Tech Hipster | Neon Core v3.0🤑</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="icon" href="https://files.catbox.moe/1xcpmm.jpg" type="image/jpg"/>
+  <link rel="apple-touch-icon" href="https://files.catbox.moe/1xcpmm.jpg"/>
+
+  <style>
+    /* === NEON VARIABLES === */
+    :root {
+      --neon-pink: #ff00ff;
+      --neon-cyan: #00ffff;
+      --neon-purple: #9d00ff;
+      --neon-green: #39ff14;
+      --bg-dark: #0a0a1a;
+      --text-glow: 0 0 10px var(--neon-cyan);
+      --box-glow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-purple);
+      --pulse-glow: 0 0 30px var(--neon-pink), 0 0 60px var(--neon-purple);
+    }
+
+    [data-theme="light"] {
+      --bg-dark: #1a1a2e;
+      --text-glow: 0 0 8px var(--neon-green);
+      --box-glow: 0 0 15px var(--neon-cyan), 0 0 30px var(--neon-green);
+      --pulse-glow: 0 0 25px var(--neon-cyan);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg-dark);
+      color: var(--neon-cyan);
+      overflow: hidden;
+      height: 100vh;
+      font-family: 'Courier New', monospace;
+      cursor: none;
+      transition: all 0.5s ease;
+    }
+
+    /* === NEON CURSOR === */
+    .cursor {
+      position: fixed;
+      width: 20px; height: 20px;
+      background: radial-gradient(circle, var(--neon-pink), transparent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      box-shadow: var(--pulse-glow);
+      transition: transform 0.1s;
+    }
+
+    .cursor::after {
+      content: '';
+      position: absolute;
+      width: 8px; height: 8px;
+      background: white;
+      border-radius: 50%;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulseCursor 1.5s infinite;
+    }
+
+    @keyframes pulseCursor {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.5); }
+    }
+
+    /* === SPLASH SCREEN === */
+    #splash {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at center, #1a0033, #000);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 9999;
+      animation: fadeOut 1s ease-in-out 4s forwards;
+    }
+
+    #splash img {
+      width: 130px; height: 130px;
+      border-radius: 50%;
+      border: 5px solid var(--neon-pink);
+      box-shadow: var(--box-glow);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    #splash h1 {
+      margin-top: 20px;
+      font-size: 3rem;
+      background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: var(--text-glow);
+      animation: glitch 2s infinite;
+    }
+
+    #splash .typing {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      color: var(--neon-green);
+      border-right: 3px solid var(--neon-green);
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      animation: typing 3s steps(30) 0.5s forwards, blink 0.7s step-end infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    @keyframes glitch {
+      0%, 100% { text-shadow: 0 0 10px var(--neon-cyan); }
+      50% { text-shadow: -2px 0 var(--neon-pink), 2px 0 var(--neon-green); }
+    }
+
+    @keyframes typing {
+      to { width: 100%; }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    /* === BACKGROUND VIDEO === */
+    #bg-video {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: -1; opacity: 0.3;
+      filter: brightness(0.7) contrast(1.3);
+    }
+
+    /* === PARTICLES === */
+    canvas#particles {
+      position: fixed; top: 0; left: 0; z-index: 0;
+    }
+
+    /* === DASHBOARD === */
+    .dashboard {
+      display: none; padding: 2rem; text-align: center;
+      height: 100vh; display: flex; flex-direction: column;
+      justify-content: space-between; position: relative;
+      border: 3px solid transparent;
+      border-image: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan)) 1;
+      animation: pulseBorder 3s infinite;
+    }
+
+    @keyframes pulseBorder {
+      0%, 100% { box-shadow: 0 0 20px var(--neon-pink); }
+      50% { box-shadow: 0 0 40px var(--neon-cyan); }
+    }
+
+    .header h1 {
+      font-size: 3.5rem;
+      background: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan), var(--neon-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: var(--text-glow);
+      transition: 0.3s;
+    }
+
+    .header h1:hover {
+      animation: glitch 0.5s;
+    }
+
+    /* === 3D FLIP CARD === */
+    .flip-card {
+      width: 180px; height: 180px;
+      perspective: 1000px;
+      margin: 1.5rem auto;
+    }
+
+    .flip-inner {
+      position: relative; width: 100%; height: 100%;
+      transition: transform 0.8s; transform-style: preserve-3d;
+    }
+
+    .flip-card:hover .flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-front, .flip-back {
+      position: absolute; width: 100%; height: 100%;
+      backface-visibility: hidden;
+      border-radius: 50%;
+      border: 5px solid var(--neon-pink);
+      box-shadow: var(--box-glow);
+    }
+
+    .flip-front img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+    }
+
+    .flip-back {
+      background: rgba(157, 0, 255, 0.8);
+      color: white;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      transform: rotateY(180deg);
+      padding: 10px;
+      font-size: 0.9rem;
+    }
+
+    .nav-buttons {
+      display: flex; flex-wrap: wrap; gap: 1rem;
+      justify-content: center; margin: 2rem 0;
+    }
+
+    .btn-neon {
+      padding: 1rem 2rem; font-size: 1.1rem;
+      background: transparent; color: var(--neon-cyan);
+      border: 2px solid var(--neon-pink); border-radius: 12px;
+      cursor: pointer; transition: all 0.3s;
+      text-shadow: var(--text-glow); box-shadow: var(--box-glow);
+      position: relative; overflow: hidden;
+    }
+
+    .btn-neon::after {
+      content: ''; position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .btn-neon:hover::after {
+      left: 100%;
+    }
+
+    .btn-neon:hover {
+      background: rgba(255, 0, 255, 0.15);
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 0 40px var(--neon-pink);
+    }
+
+    .theme-toggle {
+      position: fixed; top: 20px; right: 20px;
+      padding: 0.8rem 1.5rem; background: var(--neon-purple);
+      color: white; border: none; border-radius: 50px;
+      font-weight: bold; cursor: pointer;
+      box-shadow: var(--box-glow); z-index: 100;
+    }
+
+    .live-clock {
+      position: fixed; bottom: 70px; right: 20px;
+      font-size: 0.9rem; color: var(--neon-green);
+      text-shadow: 0 0 8px var(--neon-green);
+    }
+
+    /* === MODAL === */
+    .modal {
+      display: none; position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%; background: rgba(0, 0, 20, 0.97);
+      backdrop-filter: blur(8px); z-index: 1000;
+      padding: 2rem; overflow-y: auto;
+      animation: slideIn 0.6s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-content {
+      max-width: 850px; margin: 0 auto;
+      background: rgba(20, 0, 40, 0.8); padding: 2.5rem;
+      border-radius: 20px; border: 2px solid var(--neon-cyan);
+      box-shadow: var(--pulse-glow); color: var(--neon-cyan);
+      opacity: 0; transform: translateY(50px);
+      animation: reveal 0.8s forwards 0.3s;
+    }
+
+    @keyframes reveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .close-btn {
+      float: right; font-size: 3rem; color: var(--neon-pink);
+      cursor: pointer; text-shadow: var(--text-glow);
+      transition: 0.3s;
+    }
+
+    .close-btn:hover {
+      transform: rotate(90deg) scale(1.2);
+    }
+
+    .section-title {
+      font-size: 2.3rem; margin-bottom: 1.5rem;
+      color: var(--neon-green); text-shadow: var(--text-glow);
+    }
+
+    .search-bar {
+      display: flex; gap: 1rem; margin-bottom: 1rem;
+    }
+
+    .search-bar input {
+      flex: 1; padding: 0.8rem; background: rgba(0,0,0,0.5);
+      color: var(--neon-cyan); border: 2px solid var(--neon-purple);
+      border-radius: 10px; font-family: inherit; font-size: 20px;
+    }
+
+    .search-bar button {
+      padding: 0.8rem 1.5rem; background: var(--neon-pink);
+      color: white; border: none; border-radius: 10px;
+      cursor: pointer; box-shadow: var(--box-glow);
+    }
+
+    /* === WEATHER === */
+    .weather-current {
+      text-align: center; margin-bottom: 2rem; font-size: 25px;
+    }
+
+    .weather-forecast {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem; margin-top: 1rem; font-size: 25px;
+    }
+
+    .weather-day {
+      background: rgba(255,0,255,0.1); padding: 1rem;
+      border-radius: 10px; border: 3px solid var(--neon-cyan);
+      box-shadow: var(--box-glow); font-size: 25px;
+    }
+
+    /* === MOVIES === */
+    .movies-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem; margin-top: 1rem;
+    }
+
+    .movie-card {
+      background: rgba(0,255,255,0.1); padding: 1rem;
+      border-radius: 12px; border: 2px solid var(--neon-purple);
+      text-align: center; cursor: pointer; transition: 0.3s;
+      box-shadow: var(--box-glow);
+    }
+
+    .movie-card:hover {
+      transform: scale(1.05); box-shadow: 0 0 30px var(--neon-cyan);
+    }
+
+    .movie-card img {
+      width: 100%; height: 200px; object-fit: cover; border-radius: 8px;
+    }
+
+    .trailer-modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.95); z-index: 1001; justify-content: center; align-items: center;
+    }
+
+    .trailer-content {
+      max-width: 800px; width: 90%; position: relative;
+    }
+
+    .trailer-video {
+      width: 100%; height: 450px; border: none; border-radius: 15px;
+      box-shadow: var(--pulse-glow);
+    }
+
+    .back-btn {
+      position: absolute; top: -50px; right: 0; padding: 0.5rem 1rem;
+      background: var(--neon-pink); color: white; border: none;
+      border-radius: 10px; cursor: pointer; box-shadow: var(--box-glow);
+    }
+
+    .load-more {
+      display: block; margin: 2rem auto; padding: 1rem 2rem;
+      background: var(--neon-green); color: black; border: none;
+      border-radius: 10px; cursor: pointer; font-weight: bold;
+    }
+
+    .contact-links a {
+      color: var(--neon-pink); text-decoration: none;
+      margin: 0 12px; font-weight: bold; font-size: 30px;
+      text-shadow: 0 0 8px var(--neon-pink);
+      transition: 0.3s;
+    }
+
+    .contact-links a:hover {
+      color: var(--neon-cyan); text-shadow: 0 0 15px var(--neon-cyan);
+    }
+
+    .fun-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.2rem; margin-top: 1.5rem;
+    }
+
+    .fun-card {
+      background: rgba(255, 0, 255, 0.1); padding: 1.2rem;
+      border-radius: 12px; border: 1px solid var(--neon-purple);
+      text-align: center; box-shadow: var(--box-glow);
+      transition: 0.4s; cursor: pointer;
+    }
+
+    .fun-card:hover {
+      transform: translateY(-10px) scale(1.08);
+      background: rgba(0, 255, 255, 0.15);
+      box-shadow: 0 0 50px var(--neon-cyan);
+    }
+
+    footer {
+      text-align: center; padding: 4.5rem; color: var(--neon-green);
+      font-size: 2.1rem; text-shadow: 0 0 5px var(--neon-green);
+      border-top: 5px solid var(--neon-purple);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NEON CURSOR -->
+  <div class="cursor"></div>
+
+  <!-- BACKGROUND VIDEO -->
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="https://files.catbox.moe/bgmj0k.mp4" type="video/mp4">
+  </video>
+
+  <!-- PARTICLES CANVAS -->
+  <canvas id="particles"></canvas>
+
+  <!-- SPLASH SCREEN -->
+  <div id="splash">
+    <img src="https://files.catbox.moe/1xcpmm.jpg" alt="Logo">
+    <h1>TECH HIPSTER</h1>
+    <p class="typing">Initializing Neural Romance Engine...</p>
+  </div>
+
+  <!-- THEME TOGGLE -->
+  <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+
+  <!-- LIVE CLOCK -->
+  <div class="live-clock" id="clock">System Online: --:--</div>
+
+  <!-- MAIN DASHBOARD -->
+  <div class="dashboard" id="dashboard">
+    <div class="header">
+      <h1>TECH HIPSTER</h1>
+
+      <!-- 3D FLIP CARD -->
+      <div class="flip-card">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <img src="https://files.catbox.moe/1xcpmm.jpg" alt="Profile">
+          </div>
+          <div class="flip-back">
+            <p><strong>Skills:</strong></p>
+            <p>React • Node • Python • PWA • AI</p>
+          </div>
+        </div>
+      </div>
+
+      <p>Full-Stack Coder | Cyber Romantic | Neon Dreamer</p>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-neon" onclick="openModal('about')">About Me</button>
+      <button class="btn-neon" onclick="openModal('story')">Our Love Story</button>
+      <button class="btn-neon" onclick="openModal('contact')">Contact Me</button>
+      <button class="btn-neon" onclick="openModal('fun')">Fun Zone</button>
+      <button class="btn-neon" onclick="openWeather()">Weather Viewer</button>
+      <button class="btn-neon" onclick="openMovies()">Movie Trailers</button>
+    </div>
+
+    <footer>© 2025 Tech Hipster | Built with 💜 Neon & Code</footer>
+  </div>
+
+  <!-- MODALS -->
+  <!-- ABOUT -->
+  <div id="about" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('about')">&times;</span>
+      <h2 class="section-title">About Tech Hipster</h2>
+      <p>Brian, aka <strong>Tech Hipster</strong>, is a full-stack developer, PWA wizard, and neon romantic. He builds apps that glow, love that lasts, and code that sings.</p>
+      <p>Powered by React, Node, Python, and endless cups of coffee.</p>
+    </div>
+  </div>
+
+  <!-- STORY -->
+  <div id="story" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('story')">&times;</span>
+      <h2 class="section-title">Our Eternal Code: Brian & P.J</h2>
+      <p>We met in a GitHub repo at 2 AM. She fixed my bug. I fell in love.</p>
+      <p>From late-night debugging to sunrise coffee walks, every error led to a feature. Our first kiss? Under a neon "Hello World" sign in Tokyo.</p>
+      <p><strong>Memorable Moments:</strong></p>
+      <ul><li>Deployed anniversary site at 00:00</li><li>LED heart beats to her voice</li><li>Love letter in chiptune</li></ul>
+      <p><strong>Future:</strong> NeonJoy Labs • VR Wedding • Smart Home Whispers</p>
+      <p><em>"She's my infinite loop."</em></p>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div id="contact" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('contact')">&times;</span>
+      <h2 class="section-title">Contact Tech Hipster</h2>
+      <div class="contact-links">
+        <p>📱 <a href="https://wa.me/254748950572" target="_blank">WhatsApp: +254748950572</a></p>
+        <p>✉️ <a href="mailto:bridah888@gmail.com">bridah888@gmail.com</a></p>
+        <p>🎵 <a href="https://tiktok.com/@Brian_.Riot58" target="_blank">@Brian_.Riot58</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUN ZONE -->
+  <div id="fun" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('fun')">&times;</span>
+      <h2 class="section-title">Fun Zone</h2>
+      <div class="fun-grid">
+        <div class="fun-card" onclick="confettiBlast(); playSound('pop')">Confetti!</div>
+        <div class="fun-card" onclick="window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ','_blank'); playSound('click')">Secret</div>
+        <div class="fun-card" onclick="invert(); playSound('glitch')">Invert</div>
+        <div class="fun-card" onclick="alert('P.J: You are my favorite bug ❤️'); playSound('love')">Love Note</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEATHER MODAL -->
+  <div id="weather" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('weather')">&times;</span>
+      <h2 class="section-title">Weather Viewer</h2>
+      <div class="search-bar">
+        <input id="weather-search" placeholder="Enter city (e.g., Nairobi)" onkeypress="if(event.key==='Enter') getWeather();">
+        <button class="btn-neon" onclick="getWeather()">Search</button>
+      </div>
+      <div id="weather-display"></div>
+    </div>
+  </div>
+
+  <!-- MOVIES MODAL -->
+  <div id="movies" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('movies')">&times;</span>
+      <h2 class="section-title">Movie Trailers</h2>
+      <div class="search-bar">
+        <input id="movie-search" placeholder="Search movies (e.g., Inception)" onkeypress="if(event.key==='Enter') searchMovies();">
+        <button class="btn-neon" onclick="searchMovies()">Search</button>
+      </div>
+      <div id="movies-grid" class="movies-grid"></div>
+      <button id="load-more" class="load-more" onclick="loadMoreMovies()" style="display:none;">Load More Neon Flicks</button>
+    </div>
+  </div>
+
+  <!-- TRAILER MODAL -->
+  <div id="trailer-modal" class="trailer-modal">
+    <div class="trailer-content">
+      <button class="back-btn" onclick="closeTrailer()">Back</button>
+      <iframe id="trailer-video" class="trailer-video" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <script>
+    // === API KEYS (REPLACE THESE!) ===
+    const WEATHER_API_KEY = 'd974b0a304a2dc46639117d74bd8b1b8'; // OpenWeatherMap
+    const TMDB_API_KEY = 'e950e51d5d49e85f7c2f17f01eb23ba3'; // TMDB
+
+    // === NEON CURSOR ===
+    const cursor = document.querySelector('.cursor');
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+
+    // === PARTICLES ===
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 - 0.5;
+        this.color = Math.random() > 0.5 ? '#ff00ff' : '#00ffff';
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 80; i++) particles.push(new Particle());
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // === SPLASH FADE ===
+    setTimeout(() => {
+      document.getElementById('splash').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'flex';
+      playSound('boot');
+    }, 4500);
+
+    // === THEME TOGGLE ===
+    function toggleTheme() {
+      const body = document.body;
+      const btn = document.querySelector('.theme-toggle');
+      if (body.getAttribute('data-theme') === 'light') {
+        body.removeAttribute('data-theme');
+        btn.textContent = '🌙 Dark';
+        playSound('switch');
+      } else {
+        body.setAttribute('data-theme', 'light');
+        btn.textContent = '☀️ Light';
+        playSound('switch');
+      }
+    }
+
+    // === SOUND EFFECTS ===
+    function playSound(type) {
+      // Placeholder sounds (base64 WAV stubs)
+      const audio = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');
+      audio.play().catch(() => {});
+    }
+
+    // === CONFETTI ===
+    function confettiBlast() {
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-10px; width:10px; height:10px; background:${['#ff00ff','#00ffff','#39ff14'][Math.floor(Math.random()*3)]}; transform:rotate(${Math.random()*360}deg); animation:fall 2s linear forwards;`;
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 2000);
+      }
+    }
+    const style = document.createElement('style');
+    style.textContent = '@keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }';
+    document.head.appendChild(style);
+
+    // === INVERT ===
+    function invert() {
+      document.body.style.filter = document.body.style.filter === 'invert(1)' ? '' : 'invert(1)';
+    }
+
+    // === LIVE CLOCK ===
+    setInterval(() => {
+      const now = new Date();
+      const time = now.toLocaleTimeString();
+      const uptime = Math.floor((Date.now() - performance.timing.navigationStart) / 1000);
+      document.getElementById('clock').textContent = `Online: ${time} | Uptime: ${uptime}s`;
+    }, 1000);
+
+    // === MODAL ===
+    function openModal(id) { document.getElementById(id).style.display = 'block'; playSound('click'); }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; };
+
+    // === WEATHER ===
+    let weatherPage = 1;
+    async function getWeather(city = 'Nairobi') {
+      const apiKey = WEATHER_API_KEY;
+      if (!apiKey || apiKey === 'YOUR_WEATHER_API_KEY') {
+        document.getElementById('weather-display').innerHTML = '<p style="color:#ff00ff;">Replace YOUR_WEATHER_API_KEY in script!</p>';
+        return;
+      }
+      const cityInput = document.getElementById('weather-search').value || city;
+      try {
+        // Current
+        const currentRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityInput}&appid=${apiKey}&units=metric`);
+        const current = await currentRes.json();
+        if (current.cod !== 200) throw new Error(current.message);
+
+        // Forecast
+        const forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityInput}&appid=${apiKey}&units=metric&cnt=24`); // ~5 days (3h intervals)
+        const forecast = await forecastRes.json();
+        if (forecast.cod !== '200') throw new Error(forecast.message);
+
+        let html = `
+          <div class="weather-current">
+            <h3>${current.name}</h3>
+            <p>🌡️ ${current.main.temp}°C | Feels: ${current.main.feels_like}°C</p>
+            <p>💨 Wind: ${current.wind.speed} m/s</p>
+            <p>💧 Humidity: ${current.main.humidity}%</p>
+            <p>☁️ ${current.weather[0].description}</p>
+          </div>
+          <h4>5-Day Forecast</h4>
+          <div class="weather-forecast">`;
+
+        const days = {};
+        forecast.list.forEach(item => {
+          const date = new Date(item.dt * 1000).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+          if (!days[date]) days[date] = { temp: 0, wind: 0, hum: 0, desc: '' };
+          days[date].temp += item.main.temp;
+          days[date].wind += item.wind.speed;
+          days[date].hum += item.main.humidity;
+          days[date].desc = item.weather[0].description;
+        });
+
+        Object.entries(days).slice(0, 5).forEach(([date, data]) => {
+          const avgTemp = (data.temp / (24/5)).toFixed(1); // Approx avg for 5 days
+          const avgWind = (data.wind / (24/5)).toFixed(1);
+          const avgHum = (data.hum / (24/5)).toFixed(0);
+          html += `<div class="weather-day">
+            <h5>${date}</h5>
+            <p>🌡 ${avgTemp}°C</p>
+            <p>💨Wind: ${avgWind} m/s</p>
+            <p>💧Hum: ${avgHum}%</p>
+            <p>${data.desc}</p>
+          </div>`;
+        });
+
+        html += '</div>';
+        document.getElementById('weather-display').innerHTML = html;
+      } catch (err) {
+        document.getElementById('weather-display').innerHTML = `<p style="color:#ff1493;">Error: ${err.message}</p>`;
+      }
+    }
+
+    function openWeather() {
+      openModal('weather');
+      getWeather();
+    }
+
+    // === MOVIES ===
+    let moviesPage = 1;
+    let totalMoviesPages = 1;
+    let currentQuery = '';
+    async function searchMovies(query = 'action') {
+      currentQuery = document.getElementById('movie-search').value || query;
+      moviesPage = 1;
+      const apiKey = TMDB_API_KEY;
+      if (!apiKey || apiKey === 'YOUR_TMDB_API_KEY') {
+        document.getElementById('movies-grid').innerHTML = '<p style="color:#ff00ff;">Replace YOUR_TMDB_API_KEY in script!</p>';
+        return;
+      }
+      try {
+        const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(currentQuery)}&page=1`);
+        const data = await res.json();
+        totalMoviesPages = data.total_pages;
+        renderMovies(data.results);
+        document.getElementById('load-more').style.display = totalMoviesPages > 1 ? 'block' : 'none';
+      } catch (err) {
+        document.getElementById('movies-grid').innerHTML = `<p style="color:#ff1493;">Error: ${err.message}</p>`;
+      }
+    }
+
+    function renderMovies(movies) {
+      let html = '';
+      movies.forEach(movie => {
+        const poster = movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://via.placeholder.com/200x300?text=No+Poster';
+        html += `<div class="movie-card" onclick="openTrailer(${movie.id})">
+          <img src="${poster}" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/200x300?text=No+Image'">
+          <p>${movie.title}</p>
+        </div>`;
+      });
+      const grid = document.getElementById('movies-grid');
+      if (moviesPage === 1) grid.innerHTML = html;
+      else grid.innerHTML += html;
+    }
+
+    async function loadMoreMovies() {
+      if (moviesPage >= totalMoviesPages) return;
+      moviesPage++;
+      try {
+        const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(currentQuery)}&page=${moviesPage}`);
+        const data = await res.json();
+        renderMovies(data.results);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function openTrailer(movieId) {
+      try {
+        const res = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${TMDB_API_KEY}&language=en-US`);
+        const data = await res.json();
+        const trailer = data.results.find(v => v.type === 'Trailer' && v.site === 'YouTube');
+        if (trailer) {
+          document.getElementById('trailer-video').src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1`;
+          document.getElementById('trailer-modal').style.display = 'flex';
+        } else {
+          alert('No trailer found! 😢');
+        }
+      } catch (err) {
+        alert('Error loading trailer: ' + err.message);
+      }
+    }
+
+    function closeTrailer() {
+      document.getElementById('trailer-modal').style.display = 'none';
+      document.getElementById('trailer-video').src = '';
+    }
+
+    function openMovies() {
+      openModal('movies');
+      searchMovies();
+    }
+
+    // === PWA ===
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      setTimeout(() => {
+        if (deferredPrompt && confirm('Install Tech Hipster App?')) {
+          deferredPrompt.prompt();
+        }
+      }, 6000);
+    });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>
