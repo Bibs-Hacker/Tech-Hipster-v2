@@ -1,0 +1,13 @@
+{
+  "name": "Tech Hipster Portfolio",
+  "short_name": "TechHipster",
+  "description": "Neon-powered interactive portfolio",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0a0a1a",
+  "theme_color": "#ff00ff",
+  "icons": [
+    { "src": "https://files.catbox.moe/1xcpmm.jpg", "sizes": "192x192", "type": "image/jpg" },
+    { "src": "https://files.catbox.moe/1xcpmm.jpg", "sizes": "512x512", "type": "image/jpg" }
+  ]
+}
