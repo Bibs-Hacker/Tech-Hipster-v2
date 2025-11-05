@@ -62,16 +62,16 @@
 ### Stats & Social
 [![Version](https://img.shields.io/badge/Version-3.0-4ECDC4?style=for-the-badge&logo=npm&logoColor=white)](https://semver.org/)
 [![License](https://img.shields.io/badge/License-MIT-Yellow?style=for-the-badge&logo=mit&logoColor=white)](LICENSE)
-[![File Size](https://img.shields.io/badge/Size-%3C150KB-Green?style=for-the-badge&logo=filesize&logoColor=white)](https://github.com/yourusername/tech-hipster-portfolio)
+[![File Size](https://img.shields.io/badge/Size-%3C150KB-Green?style=for-the-badge&logo=filesize&logoColor=white)](https://github.com/Bibs-Hacker/Tech-Hipster-V2)
 [![Load Time](https://img.shields.io/badge/Load-%3C1s-Fast?style=for-the-badge&logo=rocket&logoColor=white)](https://web.dev/vitals/)
 
-[![GitHub Stars](https://img.shields.io/github/stars/yourusername/tech-hipster-portfolio?style=social)](https://github.com/yourusername/tech-hipster-portfolio/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/yourusername/tech-hipster-portfolio?style=social)](https://github.com/yourusername/tech-hipster-portfolio/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/yourusername/tech-hipster-portfolio?style=social)](https://github.com/yourusername/tech-hipster-portfolio/issues)
-[![GitHub License](https://img.shields.io/github/license/yourusername/tech-hipster-portfolio?style=social)](https://github.com/yourusername/tech-hipster-portfolio/blob/main/LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/Bibs-Hacker/Tech-Hipster-V2?style=social)](https://github.com/Bibs-Hacker/Tech-Hipster-V2/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/Bibs-Hacker/Tech-Hipster-V2?style=social)](https://github.com/Bibs-Hacker/Tech-Hipster-V2/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/Bibs-Hacker/Tech-Hipster-V2?style=social)](https://github.com/yourusername/tech-hipster-portfolio/issues)
+[![GitHub License](https://img.shields.io/github/licence/Bibs-Hacker/Tech-Hipster-v2?style=social)](https://github.com/Bibs-Hacker/Tech-Hipster-v2/blob/main/LICENSE)
 
-[![Visitors](https://visitor-badge.glitch.me/badge?page_id=yourusername.tech-hipster-portfolio&label=Visitors&color=ff00ff)](https://github.com/yourusername/tech-hipster-portfolio)
-[![Made with Love](https://img.shields.io/badge/Made_with-💜-FF69B4?style=for-the-badge&logo=heart&logoColor=white)](https://github.com/yourusername)
+[![Visitors](https://visitor-badge.glitch.me/badge?page_id=Bibs-Hacker.Tech-Hipster-V2&label=Visitors&color=ff00ff)](https://github.com/Bibs-Hacker)
+[![Made with Love](https://img.shields.io/badge/Made_with-💜-FF69B4?style=for-the-badge&logo=heart&logoColor=white)](https://github.com/Bibs-Hacker)
 
 ### Fun Badges
 [![Cyberpunk](https://img.shields.io/badge/Aesthetic-Cyberpunk-9D00FF?style=for-the-badge&logo=cyberpunk&logoColor=white)](https://cyberpunk.net/)
@@ -89,7 +89,7 @@
 <div align="center">
 
 [![Live Site](https://img.shields.io/badge/Live_Site-TechHipster.netlify.app-%23FF00FF?style=for-the-badge&logo=netlify&logoColor=white)](https://techhipster.netlify.app)
-[![Install PWA](https://img.shields.io/badge/Install_as_App-Click_Here-00FFFF?style=for-the-badge&logo=pwa&logoColor=white)](https://techhipster.netlify.app)
+[![Install PWA](https://img.shields.io/badge/Install_as_App-Click_Here-00FFFF?style=for-the-badge&logo=pwa&logoColor=white)](https://tech-hipster-v2.netlify.app)
 
 > *Replace with your actual deployment URL (e.g., GitHub Pages / Netlify)*
 
@@ -191,3 +191,14 @@ Weather/Movies    █████████████████░░  90%
    • Movie Trailers for P.J
    • 3 AM Code Sessions
    • Endless Coffee & Romance
+
+_____          _     _   _ _     _           
+   / ____|        | |   | | | (_)   | |          
+  | |     ___  ___| |__ | |_| |_ ___| |_ ___ _ __ 
+  | |    / _ \/ __| '_ \| __| | / __| __/ _ \ '__|
+  | |___|  __/ (__| | | | |_| | \__ \ ||  __/ |   
+   \_____\___|\___|_| |_|\__|_|_|___/\__\___|_|   
+
+``
+        🌤️ WEATHER API  🎬 TMDB TRAILERS  ⚡ NEON v3.0
+        PWA • OFFLINE • INTERACTIVE • ROMANTIC
